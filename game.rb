@@ -1,34 +1,43 @@
-require './question'
+require './round'
 require './player'
-# require './turn'
 
 class Game
 
   def initialize(num_of_players)
     @num_of_players = num_of_players
     @players = [*1..num_of_players].map { |player_id| { "#{player_id}": new_player() } }
-    p @players.select { |player| player[:"#{@players.index(player) + 1}"].lives <= 0 }.length <= 0
+    play_game()
   end
-
-  
 
   def new_player
     Player.new()
   end
 
-  # while @players.select { |player| player[:"#{@players.index(player) + 1}"].lives <= 0 }.length <= 0
+  def play_a_round
+    Round.new(@players)
+    @players.each do |player|
+      index = @players.index(player)
+      if player[:"#{index + 1}"].lives == 0
+        @loser = index + 1
+      end
+    end
+  end
 
-  # end
+  def announce_results
+    puts "Aww... Player #{@loser} has died."
+    puts "----- GAME OVER -----"
+    puts "G'bye!"
+  end
 
-  def new_round
-    @results = Round.new(@num_of_players)
+  def play_game
+    
+    while @players.select { |player| player[:"#{@players.index(player) + 1}"].lives <= 0 }.length <= 0
+      play_a_round()
+    end
+
+    announce_results()
   end
 
 end
 
-# q1 = Question.new()
-# p q1
-# p q1.question_prompt
-# p q1.correct_answer
-
-Game.new(5)
+Game.new(3)

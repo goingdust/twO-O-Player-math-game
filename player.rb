@@ -2,7 +2,8 @@ class Player
 
   @@number_of_players = 0
 
-  attr_reader :id, :lives
+  attr_reader :id
+  attr_accessor :lives
 
   def initialize
     @@number_of_players += 1

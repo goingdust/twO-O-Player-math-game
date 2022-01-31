@@ -10,6 +10,7 @@ class Turn
   end
 
   def ask_question
+    puts "----- NEW TURN -----"
     puts "Player #{@player_id}: #{@question_prompt}"
     @player_response = gets.chomp
     if @player_response == @correct_answer
@@ -19,6 +20,7 @@ class Turn
       @result = false
       puts "Seriously? No!"
     end
+
   end
 
 end

@@ -5,18 +5,33 @@ class Round
 
   attr_reader :results
 
-  def initialize(num_of_players)
-    @num_of_players_array = [*1..num_of_players]
+  def initialize(players)
+    @players = players
     @question = Question.new()
-    play_a_round()
+    player_turns()
   end
 
-  def play_a_round
-    @results = @num_of_players_array.map do |player|
-      Turn.new(@num_of_players_array.index(player) + 1, @question).result
+  def player_turns
+    @results = @players.map do |player|
+      @score_string = ""
+      result = Turn.new(@players.index(player) + 1, @question).result
+      
+      if !result
+        player[:"#{@players.index(player) + 1}"].take_a_life
+      end
+      
+      @players.each do |player|
+        index = @players.index(player)
+        player_obj = player[:"#{@players.index(player) + 1}"]
+
+        if index == @players.length - 1
+          @score_string += "P#{index + 1}: #{player_obj.lives}/3"
+        else
+          @score_string += "P#{index + 1}: #{player_obj.lives}/3 vs "
+        end
+      end
+      puts @score_string
     end
   end
 
 end
-
-r1 = Round.new(3)
