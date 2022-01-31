@@ -1,17 +1,24 @@
-require './question'
-
 class Turn
-  def initialize(id)
-    @id = id
+
+  attr_reader :result
+
+  def initialize(player_id, question)
+    @player_id = player_id
+    @question_prompt = question.question_prompt
+    @correct_answer = "#{question.correct_answer}"
+    ask_question()
   end
 
   def ask_question
-    "#{@question_prompt}"
-    player_answer = gets.chomp
-    if player_answer == @correct_answer
-      "YES! You are correct."
+    puts "Player #{@player_id}: #{@question_prompt}"
+    @player_response = gets.chomp
+    if @player_response == @correct_answer
+      @result = true
+      puts "YES! You are correct."
     else
-      "Seriously? No!"
+      @result = false
+      puts "Seriously? No!"
     end
   end
+
 end
