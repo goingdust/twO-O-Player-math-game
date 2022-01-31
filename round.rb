@@ -14,7 +14,7 @@ class Round
   def player_turns
     @results = @players.map do |player|
       @score_string = ""
-      result = Turn.new(@players.index(player) + 1, @question).result
+      result = Turn.new(@players.index(player) + 1, @question).ask_question
       
       if !result
         player[:"#{@players.index(player) + 1}"].take_a_life
