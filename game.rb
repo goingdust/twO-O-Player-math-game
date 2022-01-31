@@ -4,17 +4,15 @@ require './player'
 class Game
 
   def initialize(num_of_players)
-    @num_of_players = num_of_players
-    @players = [*1..num_of_players].map { |player_id| { "#{player_id}": new_player() } }
-    play_game()
+    @num_of_players = num_of_players.to_i
+    @players = [*1..@num_of_players].map { |player_id| { "#{player_id}": new_player() } }
   end
 
   def new_player
     Player.new()
   end
 
-  def play_a_round
-    Round.new(@players)
+  def get_loser
     @players.each do |player|
       index = @players.index(player)
       if player[:"#{index + 1}"].lives == 0
@@ -30,14 +28,13 @@ class Game
   end
 
   def play_game
-    
-    while @players.select { |player| player[:"#{@players.index(player) + 1}"].lives <= 0 }.length <= 0
-      play_a_round()
-    end
+    puts "BEEP BOOP now starting up the game .... here we go!!"
 
+    while @players.select { |player| player[:"#{@players.index(player) + 1}"].lives <= 0 }.length <= 0
+      Round.new(@players)
+      get_loser()
+    end
     announce_results()
   end
 
 end
-
-Game.new(3)

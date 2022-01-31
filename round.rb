@@ -3,16 +3,14 @@ require './turn'
 
 class Round
 
-  attr_reader :results
-
   def initialize(players)
     @players = players
     @question = Question.new()
-    player_turns()
+    play_a_round()
   end
 
-  def player_turns
-    @results = @players.map do |player|
+  def play_a_round
+    @players.map do |player|
       @score_string = ""
       result = Turn.new(@players.index(player) + 1, @question).ask_question
       
